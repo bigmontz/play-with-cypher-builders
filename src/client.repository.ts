@@ -3,8 +3,9 @@ import Cypher, { Clause } from "@neo4j/cypher-builder";
 import { MovieCastProvider } from "./providers";
 import { CastElement } from "./entity";
 import { Neo4jDriver } from "./infrastructure/driver";
+import CypherClient from "./infrastructure/client";
 
-export namespace Neo4jCypherBuilderRepository {
+export namespace ClientRepository {
   const movieNode = new Cypher.Node({
     labels: ['Movie']
   })
@@ -20,10 +21,12 @@ export namespace Neo4jCypherBuilderRepository {
     .to(movieNode)
 
   export function newMovieCastProvider (driver: Driver): MovieCastProvider {
+    const client = CypherClient.fromDriver({ driver, database: 'neo4j'})
+
     return async function (movieName: string): Promise<CastElement[]> {
       // can't dynamic type multiple relationships, so it needs to use
       // raw cypher
-      const { cypher, params } = new Cypher.Match(cast)
+      const clause = new Cypher.Match(cast)
         .where(movieNode, { title: new Cypher.Param(movieName)})
           .and(Cypher.in(new Cypher.RawCypher(`type(this1)`), new Cypher.Param([
             'ACTED_IN',
@@ -32,9 +35,8 @@ export namespace Neo4jCypherBuilderRepository {
             'WROTE'
           ])))
         .return([personNode.property('name'), 'name'], [personNode.property('born'), 'born'], new Cypher.RawCypher('type(this1) as role'))
-        .build()
       
-      return driver.executeQuery(cypher, params, Neo4jDriver.queryConfig())
+      return client.executeClause(clause)
     }
   
   }

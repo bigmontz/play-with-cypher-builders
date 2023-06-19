@@ -4,6 +4,7 @@ import { DriverRepository } from "./src/driver.repository";
 import { Neo4jDriver } from "./src/infrastructure/driver";
 import { Neo4jCypherBuilderRepository } from "./src/neo4j-cypher-builder.repository";
 import { MovieCastProvider } from "./src/providers";
+import { ClientRepository } from "./src/client.repository";
 
 
 async function start() {
@@ -24,6 +25,8 @@ function newMovieCastProvider(driver: Driver): MovieCastProvider  {
       return Neo4jCypherBuilderRepository.newMovieCastProvider(driver);
     case 'CYPHER_QUERY_BUILDER':
       return CypherQueryBuilderRepository.newMovieCastProvider(driver);
+    case 'CLIENT':
+      return ClientRepository.newMovieCastProvider(driver);
     case 'DRIVER':
     default:
       return DriverRepository.newMovieCastProvider(driver);
