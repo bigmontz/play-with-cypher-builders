@@ -14,8 +14,6 @@ export namespace ClientRepository {
     const client = CypherClient.fromDriver({ driver, database: 'neo4j' })
 
     return async function (movieName: string): Promise<CastElement[]> {
-      // can't dynamic type multiple relationships, so it needs to use
-      // raw cypher
       const clause = new Cypher.Match(cast)
         .where(Database.MovieNode, { title: new Cypher.Param(movieName) })
         .and(Cypher.in(Database.typeOfRel(Database.GenericRel), new Cypher.Param([
@@ -25,8 +23,8 @@ export namespace ClientRepository {
           'WROTE'
         ])))
         .return(
-          [Database.PersonNode.property('name'), 'name'],
-          [Database.PersonNode.property('born'), 'born'],
+          [Database.PersonNode.typedProperty('name'), 'name'],
+          [Database.PersonNode.typedProperty('born'), 'born'],
           [Database.typeOfRel(Database.GenericRel), 'role']
         )
 
