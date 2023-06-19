@@ -1,0 +1,30 @@
+{
+  "name": "play-with-cypher-builders",
+  "version": "0.0.0",
+  "description": "REST Api for Movies Database using Cypher Query Builders",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node ./index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bigmontz/play-with-cypher-builders.git"
+  },
+  "keywords": [
+    "neo4j",
+    "driver",
+    "cypher-builder"
+  ],
+  "author": "Antonio Barcelos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bigmontz/play-with-cypher-builders/issues"
+  },
+  "homepage": "https://github.com/bigmontz/play-with-cypher-builders#readme",
+  "devDependencies": {
+    "@types/node": "^20.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
+  }
+}
