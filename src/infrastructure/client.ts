@@ -1,6 +1,6 @@
 import { Clause, Node, Relationship } from "@neo4j/cypher-builder";
 import { PropertyRef } from "@neo4j/cypher-builder/dist/references/PropertyRef";
-import { Driver, Record, resultTransformers } from "neo4j-driver";
+import { Driver, Integer, Node as Neo4jNode, resultTransformers } from "neo4j-driver";
 
 
 
@@ -38,6 +38,10 @@ export class CypherClientRelationship<NodeShape extends Shape = Shape> extends R
   typedProperty<K extends keyof NodeShape = keyof NodeShape>  (prop: K): PropertyRef {
     return this.property(prop as string)
   }
+}
+
+export class Neo4jClientNode <NodeShape extends Shape = Shape> extends Neo4jNode<Integer, NodeShape> {
+
 }
 
 export class CypherClient {
